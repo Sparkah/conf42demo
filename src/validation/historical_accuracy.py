@@ -6,6 +6,9 @@ import json
 from pathlib import Path
 from dataclasses import dataclass
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from src.analyzers.commit_analyzer import CommitAnalyzer, CommitData
 from src.estimator.task_estimator import TaskEstimator
 
@@ -44,26 +47,29 @@ class AccuracyResult:
 def analyze_historical_accuracy(
     repo_path: Path,
     sample_size: int = 10,
-    min_hours: float = 0.5,  # Skip very quick commits
-    max_hours: float = 24.0,  # Skip overnight gaps
+    min_hours: float = 0.2,  # Skip instant commits (< 12 min)
+    max_hours: float = 6.0,  # Skip overnight gaps
 ) -> list[AccuracyResult]:
     """
     Analyze historical accuracy by comparing estimates to actual commit times.
 
     Uses time between commits as a proxy for actual work time.
     Filters out outliers (too quick or overnight gaps).
+
+    Note: This is an approximation - works best for focused coding sessions.
+    We cap at 6h to filter overnight gaps.
     """
 
     # Get commit history
     analyzer = CommitAnalyzer(repo_path)
     commits = analyzer.analyze_commits()
 
-    # Filter commits with reasonable time gaps
+    # Filter commits with reasonable time gaps (within a work session)
     valid_commits = [
         c for c in commits
         if c.time_since_last_commit_hours is not None
         and min_hours <= c.time_since_last_commit_hours <= max_hours
-        and c.total_churn > 10  # Skip trivial commits
+        and c.total_churn > 3  # Skip trivial commits
     ]
 
     # Sample commits for analysis

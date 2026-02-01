@@ -456,6 +456,7 @@ def demo_historical_accuracy():
     console.print("[bold cyan]Step 6: Historical Accuracy[/bold cyan]\n")
 
     console.print("Comparing our estimates to actual commit times...\n")
+    console.print("[dim]Methodology: Time between commits (filtered to <8h to exclude overnight gaps)[/dim]\n")
 
     # Check if we have repos
     back_repo = REPOS.get("back")
