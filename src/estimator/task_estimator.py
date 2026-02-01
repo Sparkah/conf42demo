@@ -233,13 +233,13 @@ Return ONLY the JSON, no other text."""
 
         return TaskEstimate(
             task_description=task_description,
-            estimated_hours_low=llm_result["estimated_hours_low"],
-            estimated_hours_high=llm_result["estimated_hours_high"],
-            confidence=llm_result["confidence"],
-            complexity_score=llm_result["complexity_score"],
-            complexity_reasoning=llm_result["complexity_reasoning"],
-            risk_score=llm_result["risk_score"],
-            risk_factors=llm_result["risk_factors"],
+            estimated_hours_low=llm_result.get("estimated_hours_low", 2),
+            estimated_hours_high=llm_result.get("estimated_hours_high", 8),
+            confidence=llm_result.get("confidence", 0.5),
+            complexity_score=llm_result.get("complexity_score", 5),
+            complexity_reasoning=llm_result.get("complexity_reasoning", "Analysis based on similar past work"),
+            risk_score=llm_result.get("risk_score", 50),
+            risk_factors=llm_result.get("risk_factors", []),
             similar_commits=similar_commits,
-            recommendations=llm_result["recommendations"],
+            recommendations=llm_result.get("recommendations", []),
         )
