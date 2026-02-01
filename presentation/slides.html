@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Driven Engineering Quality - Conf42 ML 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: 16in 9in;
+            margin: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0f0f0f;
+            color: #ffffff;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .slide:last-child {
+            page-break-after: avoid;
+        }
+
+        /* Title Slide */
+        .slide.title {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f2027 100%);
+        }
+
+        .slide.title h1 {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00d4ff, #7b2fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide.title h2 {
+            font-size: 32px;
+            font-weight: 400;
+            color: #a0a0a0;
+            max-width: 900px;
+            line-height: 1.4;
+        }
+
+        .slide.title .author {
+            margin-top: 60px;
+            font-size: 24px;
+            color: #666;
+        }
+
+        .slide.title .event {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #444;
+        }
+
+        /* Content Slides */
+        .slide h1 {
+            font-size: 48px;
+            margin-bottom: 40px;
+            color: #00d4ff;
+        }
+
+        .slide h2 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .slide p {
+            font-size: 28px;
+            line-height: 1.6;
+            color: #cccccc;
+            margin-bottom: 20px;
+        }
+
+        .slide ul {
+            font-size: 26px;
+            line-height: 1.8;
+            color: #cccccc;
+            margin-left: 40px;
+        }
+
+        .slide li {
+            margin-bottom: 15px;
+        }
+
+        .slide .highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .slide .warning {
+            color: #ffcc00;
+        }
+
+        .slide .danger {
+            color: #ff4444;
+        }
+
+        .slide .success {
+            color: #44ff88;
+        }
+
+        /* Problem Slide */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 20px;
+        }
+
+        .problem-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .problem-box h3 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #ff6b6b;
+        }
+
+        .problem-box.solution h3 {
+            color: #44ff88;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        .problem-item .quote {
+            color: #888;
+            font-style: italic;
+        }
+
+        .problem-item .response {
+            color: #ff6b6b;
+            margin-left: 10px;
+        }
+
+        /* Architecture Slide */
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .arch-layer {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 25px 35px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .arch-layer h3 {
+            font-size: 24px;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .arch-layer .items {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .arch-layer .item {
+            font-size: 20px;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .arch-layer .item::before {
+            content: "→";
+            color: #666;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 30px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 18px;
+            line-height: 1.6;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+
+        .code-block .comment {
+            color: #8b949e;
+        }
+
+        .code-block .keyword {
+            color: #ff7b72;
+        }
+
+        .code-block .string {
+            color: #a5d6ff;
+        }
+
+        .code-block .function {
+            color: #d2a8ff;
+        }
+
+        .code-block .danger-line {
+            background: rgba(255,0,0,0.15);
+            display: block;
+            margin: 0 -30px;
+            padding: 0 30px;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        .data-table th {
+            background: rgba(0, 212, 255, 0.2);
+            padding: 20px;
+            text-align: left;
+            color: #00d4ff;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .data-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #333;
+            color: #ccc;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* Result Cards */
+        .result-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .result-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .result-card .label {
+            font-size: 18px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .result-card .value {
+            font-size: 42px;
+            font-weight: 700;
+        }
+
+        .result-card .value.green { color: #44ff88; }
+        .result-card .value.yellow { color: #ffcc00; }
+        .result-card .value.red { color: #ff4444; }
+        .result-card .value.blue { color: #00d4ff; }
+
+        .result-card .subtext {
+            font-size: 16px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* Issues List */
+        .issues-list {
+            margin-top: 20px;
+        }
+
+        .issue-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .issue-item .severity {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .issue-item .severity.critical {
+            background: rgba(255,68,68,0.2);
+            color: #ff4444;
+        }
+
+        .issue-item .severity.warning {
+            background: rgba(255,204,0,0.2);
+            color: #ffcc00;
+        }
+
+        /* Summary Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .summary-section h3 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #00d4ff;
+        }
+
+        .summary-section ul {
+            font-size: 22px;
+        }
+
+        .summary-section li {
+            margin-bottom: 12px;
+        }
+
+        .check {
+            color: #44ff88;
+            margin-right: 10px;
+        }
+
+        /* QA Slide */
+        .slide.qa {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide.qa h1 {
+            font-size: 72px;
+            margin-bottom: 60px;
+        }
+
+        .slide.qa .github-link {
+            font-size: 32px;
+            color: #00d4ff;
+            margin-bottom: 40px;
+        }
+
+        .slide.qa .instructions {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 30px 50px;
+            font-family: monospace;
+            font-size: 20px;
+            color: #888;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .slide.qa .instructions .cmd {
+            color: #44ff88;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.05);
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 24px;
+            color: #888;
+        }
+
+        /* Accuracy highlight */
+        .accuracy-highlight {
+            background: rgba(68, 255, 136, 0.1);
+            border: 2px solid #44ff88;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .accuracy-highlight .big-number {
+            font-size: 72px;
+            font-weight: 700;
+            color: #44ff88;
+        }
+
+        .accuracy-highlight .label {
+            font-size: 24px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        /* Print styles */
+        @media print {
+            .slide {
+                width: 100%;
+                height: 100vh;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide title">
+    <h1>AI-Driven Engineering Quality</h1>
+    <h2>How We Use Machine Learning to Predict Delivery Time and Improve Code Reliability</h2>
+    <div class="author">Timofey Markin</div>
+    <div class="event">Conf42 Machine Learning 2026</div>
+</div>
+
+<!-- Slide 2: The Problem -->
+<div class="slide">
+    <h1>The Problem</h1>
+    <div class="problem-grid">
+        <div class="problem-box">
+            <h3>🤷 Planning by Gut Feel</h3>
+            <div class="problem-item">
+                <span class="quote">"How long will this take?"</span>
+                <span class="response">→ "Maybe 2 days?"</span>
+            </div>
+            <div class="problem-item">
+                <span class="quote">"Is this PR risky?"</span>
+                <span class="response">→ "Looks fine to me"</span>
+            </div>
+            <div class="problem-item">
+                <span class="quote">"What could go wrong?"</span>
+                <span class="response">→ "We'll find out in prod"</span>
+            </div>
+        </div>
+        <div class="problem-box solution">
+            <h3>✅ Our Solution</h3>
+            <ul>
+                <li>Estimate delivery time <span class="highlight">before coding starts</span></li>
+                <li>Quantify code risk <span class="highlight">on every PR</span></li>
+                <li>Use <span class="highlight">historical data + LLM</span> analysis</li>
+                <li>Provide <span class="highlight">actionable recommendations</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Architecture -->
+<div class="slide">
+    <h1>System Architecture</h1>
+    <div class="architecture">
+        <div class="arch-layer">
+            <h3>1. Feature Extraction</h3>
+            <div class="items">
+                <span class="item">Git history (commits, churn, ownership)</span>
+                <span class="item">Static analysis (complexity, LOC)</span>
+                <span class="item">Embeddings (commit messages → vectors)</span>
+            </div>
+        </div>
+        <div class="arch-layer">
+            <h3>2. RAG Retrieval</h3>
+            <div class="items">
+                <span class="item">Semantic search over past commits</span>
+                <span class="item">Find similar historical work</span>
+                <span class="item">ChromaDB vector store</span>
+            </div>
+        </div>
+        <div class="arch-layer">
+            <h3>3. LLM Analysis</h3>
+            <div class="items">
+                <span class="item">Task complexity reasoning</span>
+                <span class="item">Risk factor identification</span>
+                <span class="item">Code smell detection</span>
+            </div>
+        </div>
+        <div class="arch-layer">
+            <h3>4. Output</h3>
+            <div class="items">
+                <span class="item">Time estimate with confidence</span>
+                <span class="item">Risk score (0-100)</span>
+                <span class="item">Actionable recommendations</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Repository Analysis -->
+<div class="slide">
+    <h1>Demo: Repository Analysis</h1>
+    <p>Analyzing a real project: NFT Clicker Game (NestJS + Cocos Creator + Solidity)</p>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Repository</th>
+                <th>Commits</th>
+                <th>Code Churn</th>
+                <th>Top Categories</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>backend</td>
+                <td>56</td>
+                <td>14,187 lines</td>
+                <td>UI, NFT, Auth</td>
+            </tr>
+            <tr>
+                <td>frontend</td>
+                <td>10</td>
+                <td>11,254 lines</td>
+                <td>API, Auth, UI</td>
+            </tr>
+            <tr>
+                <td>smart-contract</td>
+                <td>2</td>
+                <td>47 lines</td>
+                <td>Infra, NFT</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin-top: 30px; color: #44ff88;">✓ 68 commits indexed for RAG retrieval</p>
+</div>
+
+<!-- Slide 5: Task Estimation -->
+<div class="slide">
+    <h1>Demo: Task Estimation</h1>
+    <p style="margin-bottom: 30px;">Task: <span class="highlight">"Add a new leaderboard feature with pagination"</span></p>
+
+    <div class="result-cards">
+        <div class="result-card">
+            <div class="label">Estimated Time</div>
+            <div class="value blue">4-8h</div>
+            <div class="subtext">70% confidence</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Complexity</div>
+            <div class="value yellow">6/10</div>
+            <div class="subtext">Moderate</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Risk Score</div>
+            <div class="value green">35/100</div>
+            <div class="subtext">Low-Medium</div>
+        </div>
+    </div>
+
+    <h2 style="margin-top: 40px;">Similar Past Work (RAG)</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Past Commit</th>
+                <th>Similarity</th>
+                <th>Files</th>
+                <th>Churn</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>add get all leaderboard api, post score api</td>
+                <td>49%</td>
+                <td>9</td>
+                <td>1,282</td>
+            </tr>
+            <tr>
+                <td>upd leaderboard display</td>
+                <td>43%</td>
+                <td>1</td>
+                <td>2</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Slide 6: Code Review -->
+<div class="slide">
+    <h1>Demo: AI Code Review</h1>
+    <p>Reviewing: <span class="highlight">nft.service.ts</span> (NFT minting service)</p>
+
+    <div class="result-cards" style="margin-bottom: 30px;">
+        <div class="result-card">
+            <div class="label">Risk Score</div>
+            <div class="value red">75/100</div>
+            <div class="subtext">High Risk</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Quality Score</div>
+            <div class="value yellow">45/100</div>
+            <div class="subtext">Needs Work</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Recommendation</div>
+            <div class="value red">❌</div>
+            <div class="subtext">Request Changes</div>
+        </div>
+    </div>
+
+    <div class="issues-list">
+        <div class="issue-item">
+            <span class="severity critical">CRITICAL</span>
+            <span>Private key exposed in environment variable logging</span>
+        </div>
+        <div class="issue-item">
+            <span class="severity critical">CRITICAL</span>
+            <span>Contract address not validated, could be null</span>
+        </div>
+        <div class="issue-item">
+            <span class="severity warning">WARNING</span>
+            <span>External API call without timeout or rate limiting</span>
+        </div>
+        <div class="issue-item">
+            <span class="severity warning">WARNING</span>
+            <span>Silent failure returns true on blockchain error</span>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Security Detection -->
+<div class="slide">
+    <h1>Demo: Security Vulnerability Detection</h1>
+    <p>Reviewing intentionally vulnerable code:</p>
+
+    <div class="code-block" style="margin: 20px 0;">
+        <span class="keyword">class</span> <span class="function">PaymentService</span>:<br>
+        <span class="danger-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># ISSUE: Hardcoded credentials</span></span>
+        <span class="danger-line">&nbsp;&nbsp;&nbsp;&nbsp;secret_key = <span class="string">"super_secret_key_12345"</span></span>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="function">get_balance</span>(self, user_id):<br>
+        <span class="danger-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># ISSUE: SQL injection</span></span>
+        <span class="danger-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;query = <span class="string">f"SELECT * FROM users WHERE id = '{user_id}'"</span></span>
+    </div>
+
+    <div class="result-cards">
+        <div class="result-card">
+            <div class="label">Risk Score</div>
+            <div class="value red">95/100</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Quality Score</div>
+            <div class="value red">15/100</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Critical Issues</div>
+            <div class="value red">12</div>
+        </div>
+    </div>
+
+    <p style="margin-top: 20px; color: #44ff88;">✓ SQL injection, command injection, hardcoded creds, auth bypass all detected</p>
+</div>
+
+<!-- Slide 8: Historical Accuracy -->
+<div class="slide">
+    <h1>Validation: Historical Accuracy</h1>
+    <p>Comparing estimates to actual commit times (filtered to work sessions &lt;6h)</p>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Commit</th>
+                <th>Estimated</th>
+                <th>Actual</th>
+                <th>Accurate?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>backend setup</td>
+                <td>8-24h</td>
+                <td>4.0h</td>
+                <td class="danger">❌</td>
+            </tr>
+            <tr>
+                <td>upd build static folder</td>
+                <td>0.5-2h</td>
+                <td>0.8h</td>
+                <td class="success">✅</td>
+            </tr>
+            <tr>
+                <td>upd auth</td>
+                <td>0.3-0.5h</td>
+                <td>0.4h</td>
+                <td class="success">✅</td>
+            </tr>
+            <tr>
+                <td>upd nft service</td>
+                <td>3-7h</td>
+                <td>5.0h</td>
+                <td class="success">✅</td>
+            </tr>
+            <tr>
+                <td>add ai generated image</td>
+                <td>0.2-0.5h</td>
+                <td>0.3h</td>
+                <td class="success">✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="accuracy-highlight">
+        <div class="big-number">83%</div>
+        <div class="label">Estimates within predicted range (5/6 commits)</div>
+    </div>
+</div>
+
+<!-- Slide 9: Summary -->
+<div class="slide">
+    <h1>Summary</h1>
+    <div class="summary-grid">
+        <div class="summary-section">
+            <h3>What We Built</h3>
+            <ul>
+                <li><span class="check">✓</span>Git history feature extraction</li>
+                <li><span class="check">✓</span>Static code analysis</li>
+                <li><span class="check">✓</span>RAG over past commits</li>
+                <li><span class="check">✓</span>LLM-powered estimation</li>
+                <li><span class="check">✓</span>Security vulnerability detection</li>
+                <li><span class="check">✓</span>Historical accuracy validation</li>
+                <li><span class="check">✓</span>GitHub webhook integration</li>
+            </ul>
+        </div>
+        <div class="summary-section">
+            <h3>Results</h3>
+            <ul>
+                <li><span class="check">✓</span>83% estimation accuracy</li>
+                <li><span class="check">✓</span>Catch security issues pre-merge</li>
+                <li><span class="check">✓</span>PMs prioritize by risk score</li>
+                <li><span class="check">✓</span>Engineers get actionable fixes</li>
+            </ul>
+            <h3 style="margin-top: 40px;">Tech Stack</h3>
+            <div class="tech-stack" style="justify-content: flex-start; margin-top: 20px;">
+                <span class="tech-item">Python</span>
+                <span class="tech-item">FastAPI</span>
+                <span class="tech-item">ChromaDB</span>
+                <span class="tech-item">Claude API</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Q&A -->
+<div class="slide qa">
+    <h1>Questions?</h1>
+    <div class="github-link">github.com/Sparkah/conf42demo</div>
+    <div class="instructions">
+        <span class="cmd">git clone</span> https://github.com/Sparkah/conf42demo<br>
+        <span class="cmd">cd</span> conf42demo<br>
+        <span class="cmd">pip install</span> -e .<br>
+        <span class="cmd">python</span> scripts/presentation_demo.py
+    </div>
+</div>
+
+</body>
+</html>
