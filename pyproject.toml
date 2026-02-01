@@ -1,0 +1,33 @@
+[project]
+name = "ai-eng-quality"
+version = "0.1.0"
+description = "AI-driven engineering quality: task estimation and code review"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.40.0",
+    "chromadb>=0.4.22",
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "gitpython>=3.1.41",
+    "radon>=6.0.1",
+    "pydantic>=2.5.0",
+    "rich>=13.7.0",
+    "typer>=0.9.0",
+    "python-dotenv>=1.0.0",
+    "httpx>=0.26.0",
+    "openai>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=24.1.0",
+    "ruff>=0.1.14",
+]
+
+[project.scripts]
+aeq = "src.cli:app"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
