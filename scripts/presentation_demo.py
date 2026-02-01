@@ -305,6 +305,24 @@ def demo_code_review():
 
     console.print(f"Reviewing: [cyan]{review_file.name}[/cyan] from your project\n")
 
+    # Show code snippet first
+    console.print("[bold]Code Preview:[/bold]")
+    try:
+        code = review_file.read_text()
+        lines = code.split('\n')[:40]  # First 40 lines
+        code_preview = '\n'.join(lines)
+        if len(code.split('\n')) > 40:
+            code_preview += '\n\n... (truncated)'
+        console.print(Panel(
+            f"```typescript\n{code_preview}\n```",
+            title=f"{review_file.name}",
+            border_style="dim",
+        ))
+    except Exception:
+        pass
+
+    pause("Press Enter to run AI review...")
+
     from src.reviewer.code_reviewer import CodeReviewer
 
     with Progress(
@@ -335,7 +353,45 @@ def demo_bad_code_review():
         pause()
         return
 
-    console.print(f"Reviewing: [red]{BAD_CODE_FILE.name}[/red] (deliberately vulnerable)\n")
+    console.print(f"Reviewing: [red]{BAD_CODE_FILE.name}[/red]\n")
+
+    # Show the vulnerable code first - highlight the bad parts
+    bad_code_preview = '''class PaymentService:
+    def __init__(self):
+        # ISSUE: Hardcoded credentials
+        self.secret_key = "super_secret_key_12345"
+
+    def get_user_balance(self, user_id: str) -> float:
+        # ISSUE: SQL injection vulnerability
+        query = f"SELECT balance FROM users WHERE id = '{user_id}'"
+        cursor = self.db.execute(query)
+        return cursor.fetchone()[0]
+
+    def process_payment(self, user_id: str, amount: float):
+        # ISSUE: No input validation, race condition
+        balance = self.get_user_balance(user_id)
+        if balance >= amount:
+            # Another request could modify balance here!
+            self.db.execute(f"UPDATE users SET balance = {balance - amount}...")
+
+    def export_transactions(self, user_id: str, format: str):
+        # ISSUE: Command injection
+        cmd = f"mysqldump payments --user={user_id} > /tmp/export.{format}"
+        subprocess.os.system(cmd)  # Dangerous!
+
+    def get_admin_data(self, admin_token=None):
+        # ISSUE: Auth bypass - empty token grants access!
+        if admin_token == "" or admin_token is None:
+            pass  # Oops!
+        return {"database_password": DATABASE_PASSWORD, ...}'''
+
+    console.print(Panel(
+        f"[red]{bad_code_preview}[/red]",
+        title="⚠️  Vulnerable Code (can you spot the issues?)",
+        border_style="red",
+    ))
+
+    pause("Press Enter to run AI security review...")
 
     from src.reviewer.code_reviewer import CodeReviewer
 
