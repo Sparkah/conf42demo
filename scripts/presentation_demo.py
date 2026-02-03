@@ -64,9 +64,29 @@ def title_slide():
         "[bold blue]AI-Driven Engineering Quality[/bold blue]\n\n"
         "[white]How We Use Machine Learning to Predict\n"
         "Delivery Time and Improve Code Reliability[/white]\n\n"
-        "[dim]Demo System[/dim]",
+        "[dim]Timofey Markin • Conf42 ML 2026[/dim]",
         border_style="blue",
         padding=(2, 4),
+    ))
+    pause()
+
+
+def about_speaker():
+    """About the speaker slide."""
+    clear()
+    console.print(Panel(
+        "[bold]About the Speaker[/bold]\n\n"
+        "• [cyan]5+ years[/cyan] building high-scale, full-stack applications\n"
+        "• Shipped platforms serving [cyan]200,000+ users[/cyan]\n"
+        "• Technical Product Manager with hands-on engineering background\n"
+        "[bold yellow]Session Focus[/bold yellow]\n\n"
+        "This talk bridges real-world engineering challenges with applied ML.\n"
+        "We'll build a working system that uses [cyan]RAG + LLM[/cyan] to analyze\n"
+        "git history, estimate task difficulty, and detect code risks.\n\n"
+        "[dim]Skills: TypeScript • Python • Node.js • PostgreSQL • C#/Unity[/dim]",
+        title="Timofey Markin",
+        border_style="cyan",
+        padding=(1, 2),
     ))
     pause()
 
@@ -582,8 +602,9 @@ def demo_questions():
     """Q&A slide."""
     clear()
     console.print(Panel(
-        "[bold blue]Questions?[/bold blue]\n\n"
+        "[bold blue]Thank You![/bold blue]\n\n"
         "GitHub: [cyan]github.com/Sparkah/conf42demo[/cyan]\n\n"
+        "LinkedIn: [cyan]linkedin.com/in/tim-markin-abb776150[/cyan]\n\n"
         "Run the demo:\n"
         "  git clone https://github.com/Sparkah/conf42demo\n"
         "  cd conf42demo\n"
@@ -598,6 +619,7 @@ def run_demo():
     """Run the full demo."""
     try:
         title_slide()
+        about_speaker()
         demo_intro()
         demo_architecture()
         demo_repo_analysis()
